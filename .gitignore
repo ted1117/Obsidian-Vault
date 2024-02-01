@@ -1,5 +1,11 @@
-.DS_Store obsidian/workspace.json
+# Configuration for .gitignore
+
+# To exclude Obsidian's settings (including plugin and hotkey configurations)
+.obsidian/
+
+# OR only to exclude workspace cache
 .obsidian/workspace.json
-obsidian/workspace-mobile.json
-.obsidian/workspace-mobile.json
-출처: https://knowslog.tistory.com/entry/Obsidian-Github-연동 [Knowslog(지식저장소):티스토리]
+
+# Add below lines to exclude OS settings and caches
+.trash/
+.DS_Store
