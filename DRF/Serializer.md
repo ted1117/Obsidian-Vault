@@ -24,6 +24,7 @@ JSON은 자료형만 변환하는 수준으로 (역)직렬화함. 허용하는 �
 ### 과정
 #### 직렬화
 직렬화: c0 -> dict -> bytes(바이트스트링) -> 클라이언트에 전송
+Read Operation: GET
 #### 역직렬화
 직렬화의 역순.
 클라이언트에게 받은 데이터를 Serializer에 넣음
@@ -40,3 +41,4 @@ dsr.is_valid()
 instance = Comment(**dsr.validated_data)
 instance.save()    # DB에 저장
 ```
+Write Operation: POST UPDATE DELETE PATCH
