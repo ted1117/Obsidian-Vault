@@ -21,3 +21,22 @@ class Person:
 클래스 Person이 파일로 저장됐다가 다시 복원될 때, name과 age가 Person의 변수임, name과 age가 각각 Person에 속한 string과 integer라는 것 등의 정보가 그대로 담겨있어야 함.
 ### JSON
 JSON은 자료형만 변환하는 수준으로 (역)직렬화함. 허용하는 자료형도 Number, String, Object, List, Null 정도만 사용. Python의 Dict 자료형과 비슷한 모습.
+### 과정
+#### 직렬화
+직렬화: c0 -> dict -> bytes(바이트스트링) -> 클라이언트에 전송
+#### 역직렬화
+직렬화의 역순.
+클라이언트에게 받은 데이터를 Serializer에 넣음
+```python
+# 이때 인자가 instance가 아니라 data임에 주목
+dsr = CommentSerializer(data=ddata0)
+
+# 클라이언트에게 받은 데이터에 오류 여부를 확인하는 과정 필요
+dsr.is_valid()
+```
+
+유효성 확인을 통과한 데이터는 validated_data에 담김 (dsr.validated_data)
+```python
+instance = Comment(**dsr.validated_data)
+instance.save()    # DB에 저장
+```
