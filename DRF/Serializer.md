@@ -1,11 +1,3 @@
-```table-of-contents
-title: 
-style: nestedList # TOC style (nestedList|inlineFirstLevel)
-minLevel: 0 # Include headings from the specified level
-maxLevel: 0 # Include headings up to the specified level
-includeLinks: true # Make headings clickable
-debugInConsole: false # Print debug info in Obsidian console
-```
 - [[#Form vs. Model|Form vs. Model]]
 - [[#직렬화와 역직렬화|직렬화와 역직렬화]]
 	- [[#직렬화와 역직렬화#메모리 내부와 외부|메모리 내부와 외부]]
@@ -53,3 +45,47 @@ instance = Comment(**dsr.validated_data)
 instance.save()    # DB에 저장
 ```
 Write Operation: POST UPDATE DELETE PATCH
+
+## 노출되는 필드의 자료형을 바꾸는 법
+```python
+# models.py
+class Post(models.Model):
+	category = models.ForeignKey(
+	"Category", on_delete=models.SET_NULL, blank=True, null=True
+	)
+	tags = models.ManyToManyField("Tag", blank=True)
+	title = models.CharField("TITLE", max_length=50)
+	description = models.CharField(
+	"DESCRIPTION", max_length=100, blank=True, help_text="simple one-line text."
+	)
+	image = models.ImageField("IMAGE", upload_to="blog/%Y/%m/", blank=True, null=True)
+	content = models.TextField("CONTENT")
+	create_dt = models.DateTimeField("CREATE DT", auto_now_add=True)
+	update_dt = models.DateTimeField("UPDATE DT", auto_now=True)
+	like = models.PositiveSmallIntegerField("LIKE", default=0)  
+
+	class Meta:
+		ordering = ("update_dt",)
+
+	def __str__(self):
+		return self.title
+
+class Category(models.Model):
+	name = models.CharField(max_length=50, unique=True)
+	description = models.CharField(
+		"DESCRIPTION", max_length=100, blank=True, help_text="simple one-line text."
+	)
+
+def __str__(self):
+	return self.name
+```
+Post의 category 필드는 Category를 참조한다. 당연히 Category의 id를 참조하기 때문에 id가 아니라 이름을 쓰기 위해선 Category의 name 필드를 이용해야 한다.
+```python
+class PostListSerializer(serializers.ModelSerializer):
+	category = serializers.CharField(source="category.name")
+	
+	class Meta:
+		model = Post
+		fields = ["id", "title", "image", "like", "category"]
+```
+PostListSerializer에서 serializers.CharField를 이용한다. 이때 source 인자는 Post의 category 필드이름을 쓰고 점 뒤에 참조하는 모델의 필드명을 적는다.
