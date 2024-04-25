@@ -139,9 +139,17 @@ Internet Control Message Protocol
 ---
 ## TCP 연결 해제
 ### 단계
+![[4-way.png]]
 1. 클라이언트에서 서버로 FIN 패킷 전송 후, FIN_WAIT_1 상태 진입
 2. 서버가 FIN 패킷 수신 후, 클라이언트에 ACK 전송과 동시에 CLOSE_WAIT 진입.
 3. 클라이언트가 ACK 수신 후, FIN_WAIT_2 상태 진입
-4. 서버가 LAST_ACK 상태가 되어 
+4. 서버가 LAST_ACK 상태가 되어 일정 시간 후에 클라이언트에 FIN 패킷 전송
+5. 클라이언트가 수신 후 TIME_WAIT 상태에서 서버로 ACK 전송
+6. 서버가 CLOSED 상태
+7. 클라이언트는 2* MSL[^2] 후에 CLOSED
+### TIME_WAIT
+1. 지연 패킷 등의 이유로 데이터 무결성을 위해
+2. 원격 종단의 연결이 닫혔는지 확인 - 마지막 ACK의 유실 가능성
 
 [^1]: TCP 기반 통신에서 새 연결에 할당된 32비트 고유 번호
+[^2]: Maximum Segment Lifetime. 패킷의 최대 수명.
