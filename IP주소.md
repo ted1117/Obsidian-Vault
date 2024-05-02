@@ -7,6 +7,13 @@
 	- [개요](#%EA%B0%9C%EC%9A%94)
 	- [정의](#%EC%A0%95%EC%9D%98)
 	- [단점](#%EB%8B%A8%EC%A0%90)
+- [클래스리스](#%ED%81%B4%EB%9E%98%EC%8A%A4%EB%A6%AC%EC%8A%A4)
+	- [개요](#%EA%B0%9C%EC%9A%94)
+	- [서브넷마스크](#%EC%84%9C%EB%B8%8C%EB%84%B7%EB%A7%88%EC%8A%A4%ED%81%AC)
+	- [예시](#%EC%98%88%EC%8B%9C)
+- [공인 IP와 사설 IP](#%EA%B3%B5%EC%9D%B8%20IP%EC%99%80%20%EC%82%AC%EC%84%A4%20IP)
+	- [NAT](#NAT)
+
 
 ## 주소체계
 ### IPv4
@@ -74,7 +81,11 @@ A. 사무실 하나당 호스트 주소로 4비트를 사용(2^4 - 2 = 16 - 2 = 
 IPv4가 이미 포화됐으므로 알뜰살뜰하게 써야 한다. 이러한 IP 주소 부족을 공인 IP(Public IP)와 사설 IP(Private IP)로 나누고 NAT로 번역하여 해결한다.  
 
 ### NAT
-NAT(Network Address Translation)은 패킷이 
+Network Address Translation. 주로 공인 IP와 사설 IP 사이의 변환을 위해 사용되는 기술.  
+1. IP 주소 보존 및 절약
+2. 보안 강화
+3. 트래픽 관리
+
 
 
 [^1]: Time To Live. 패킷이 네트워크에서 무한 순환하지 않도록 수명을 정해놓음. 라우터를 하나 지날 때마다 1씩 감소.
