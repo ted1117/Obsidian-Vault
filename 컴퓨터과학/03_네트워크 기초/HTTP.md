@@ -57,7 +57,23 @@ HOL Blocking(Head Of Line blocking): 패킷은 클라이언트가 요청한 순�
 ex) 요청한 HTML에 CSS가 포함되었다면 CSS를 따로 요청하지 않아도 서버가 CSS를 전송  
 
 ### 헤더 압축
+헤더를 허프만 인코딩으로 압축한다.  
+> [!note] 
+> **허프만 인코딩**  
+> 문자열에서 문자의 출연 빈도 수에 따라 비트를 부여하는 방식  
+> 공통되는 필드를 중심으로 재구성  
 
+### 우선순위
+서버에서 원하는 우선순위대로 리소스 전달  
 
+## HTTP/3
+HTTP/2는 여전히 TCP를 이용하기 때문에 초기 연결 단계에서 RTT로 인한 지연 시간 발생  
+QUIC(Quick UDP Internet Connection) 계층을 이용한다.  
+
+![[QUIC.webp]]  
+기존 HTTP/2는 TCP 연결 외에 암호화 통신을 위한 TLS 핸드셰이크를 따로 수행했으나  
+HTTP/3는 UDP 기반의 QUIC 덕에 단 한 번의 핸드셰이크로 세션과 TLS 연결을 모두 구축한다.  
+
+또한 전송된 패킷의 손실 여부를 수신측에서 검출하여 수정하는 FEC(Forward Error Correction)이 있다.  
 
 [^1]: 기존 HTTP/1.x에선 단일 TCP 연결로 병렬 요청이 불가했다.
