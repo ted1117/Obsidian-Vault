@@ -111,10 +111,24 @@ TLS(Transport Layer Secure)는 SSL(Secure Socket Layer) 1.0, 2.0, 3.0을 거쳐 
 1. **ClientHello**
    클라이언트가 서버에 지원하는 TLS 버전, 사이퍼슈트, 클라이언트 랜덤값, 임시 DH 매개변수를 서버에 전송  
 2. **ServerHello / EncryptedExtensions / Certificate / CertificateVerify**
-   - 클라이언트의 요청에 서버와 클라이언트에서 지원하는 가장 높은 TLS 버전을 결정하고 사이퍼슈트 지원 여부 확인
-   - 공개키가 포함된 SSL 인증서와 서버 랜덤값, 임시 DH 매개변수 전송
-   - 서로 교환한 DH 매개변수로 세션키 생성
-3. **Finished**
-   - 세션키를 기반으로 대칭 암호화 통신 개시
+   - 서버가 서버와 클라이언트에서 모두 지원하는 가장 높은 TLS 버전 결정
+   - 서버 랜덤값, TLS 버전, 사이퍼 슈트를 포함한 메시지 전송
+3. **ServerKeyExchange**(선택적)
+   - 서버가 DH 정보를 클라이언트에 전송(RSA가 아닐 때 한정)
+4. **CertificateRequest**(선택적)
+   - 서버가 클라이언트에 인증서 요청
+5. **ServerHelloDone**
+   - 서버가 초기 설정을 완료했음을 클라이언트에 고지
+6. **ClientKeyExchange**
+   - 클라이언트가 서버의 DH 매개변수로 Pre-Master Secret을 생성하고 서버에 전송
+   - 이를 바탕으로 클라이언트와 서버가 세션키 생성
+7. **CertificateVerify**(선택적)
+   - 클라이언트가 서버에 인증서 전송
+8. **ChangeCipherSpec**
+   - 서버가 선택한 암호화 알고리즘을 적용
+   - 클라이언트가 암호화 통신 준비 완료를 서버에 전송
+9. **Finished**
+   - 대칭 암호화 통신 개시
+
 
 [^1]: 기존 HTTP/1.x에선 단일 TCP 연결로 병렬 요청이 불가했다.
