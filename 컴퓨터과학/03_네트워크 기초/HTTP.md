@@ -130,5 +130,22 @@ TLS(Transport Layer Secure)는 SSL(Secure Socket Layer) 1.0, 2.0, 3.0을 거쳐 
 9. **Finished**
    - 대칭 암호화 통신 개시
 
+## Diffie-Hellman
+![[1920px-Diffie-Hellman_Key_Exchange.svg_png 1.jpg]]  
+공개값을 공유하고 비밀값을 혼합한 뒤 공유하고 비밀값을 혼합하여 공통 암호키를 생성하는 알고리즘  
 
+## 사이퍼슈트
+프로토콜, AEAD 사이퍼 모드, 해싱 알고리즘이 나열된 규약을 말하며, 암호제품군이라고도 함.  
+TLS 1.3엔 5개가 있음
+- TLS_AES_128_GCM_SHA256
+TLS / AES 128 GCM / SHA256 세 가지 규약을 포함한다는 뜻  
+- TLS: 프로토콜  
+- AES_128_GCM: AEAD 사이퍼 모드
+- SHA256: 해싱 알고리즘
+
+### AEAD 사이퍼 모드
+AEAD(Authenticated Encryption with Associated Data)는 데이터 암호화 알고리즘
+
+### 해싱 알고리즘
+데이터를 추정하기 힘들게 더 작고 섞여 있는 조각으로 만드는 알고리즘  
 [^1]: 기존 HTTP/1.x에선 단일 TCP 연결로 병렬 요청이 불가했다.
