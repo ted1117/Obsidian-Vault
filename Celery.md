@@ -92,7 +92,7 @@ def debug_task(self):
     print(f'Request: {self.request!r}')
 ```
 
-### worker
+## worker
 ```python
 # api/tasks.py
 from celery import shared_task
@@ -101,4 +101,29 @@ from celery import shared_task
 @shared_task  
 def add(x, y):  
     return x + y
+```
+
+```shell
+$ celery -A config worker -l INFO
+```
+
+## Celery-beat
+```python
+# config/celery.py
+...
+
+app.conf.timezone = 'Asia/Seoul'  
+
+# test-periodic-job은 실행할 태스크 이름
+# task의 value는 실행할 메소드 경로 및 이름
+app.conf.beat_schedule = {  
+    "test-periodic-job": {  
+        "task": "api.tasks.test_periodic_task",  
+        "schedule": crontab()  
+    }  
+}
+```
+
+```shell
+$ celery -A config worker --beat -l INFO
 ```
