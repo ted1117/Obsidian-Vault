@@ -46,6 +46,17 @@ instance.save()    # DB에 저장
 ```
 Write Operation: POST UPDATE DELETE PATCH
 
+### 사용법 정리
+
+|                 | 기능                       | data= 입력           | data= 미입력 |
+| --------------- | ------------------------ | ------------------ | --------- |
+| is_valid()      | serializer 검증            | 가능                 | 불가능       |
+| .initial_data   | 초기 data 반환               | 가능                 | 불가능       |
+| .validated_data | 검증된 data 반환              | is_valid() 호출 후 사용 | 불가능       |
+| .errors         | 검증 중 발생한 error           | (상동)               | 불가능       |
+| .data           | serializer로 직렬화된 data 반환 | (상동)               | 가능        |
+
+
 ## 노출되는 필드의 자료형을 바꾸는 법
 ```python
 # models.py
@@ -89,3 +100,55 @@ class PostListSerializer(serializers.ModelSerializer):
 		fields = ["id", "title", "image", "like", "category"]
 ```
 PostListSerializer에서 serializers.CharField를 이용한다. 이때 source 인자는 Post의 category 필드이름을 쓰고 점 뒤에 참조하는 모델의 필드명을 적는다.
+
+## 검증
+### Field-level validation
+#### def validate_(field)(self, value):
+```python
+#serializers.py
+from rest_framework import serializers
+
+class AnimalSerializer(serializers.Serializers):
+	name = serializers.CharField(max_length=50)
+	info = serializers.CharField()
+
+	def validate_name(self, value):
+		if not (value.isalpha()):
+			raise serializers.ValidationError("Animal names must be alphabetic only.)
+		return value
+```
+
+### Object-level validation
+#### def validate(self, data):
+```python
+#serializers.py
+from rest_framework import serializers
+
+class AnimalSerializer(serializers.Serializers):
+	name = serializers.CharField(max_length=50)
+	info = serializers.CharField()
+
+	def validate(self, data):
+		if len(data["name"]) > len(data["info"]):
+			raise serializers.ValidationError("Info is too short!")
+		return data
+```
+
+### Validators
+```python
+from rest_framework import serializers
+
+def name_is_alphabetic(value):
+	if not (value.isalpha()):
+		raise serializers.ValidationError("Animal names must be alphabetic only.")
+
+class AnimalSerializer(serializers.Serializer):
+	name = serializers.CharField(max_length=10, validators=[name_is_alphabetic])
+```
+
+## Partial updates
+- partial=True 인자 사용
+
+## Multiple objects
+- 단일 오브젝트 인스턴스가 아니라 여러 개를 처리할 때, many=True 사용
+
